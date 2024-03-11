@@ -1,13 +1,11 @@
 package com.patch.atividade.controller;
 
 import com.patch.atividade.model.dto.UserDTO;
-import com.patch.atividade.model.entity.Archive;
 import com.patch.atividade.model.entity.User;
 import com.patch.atividade.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -61,24 +59,24 @@ public class UserController {
                 new ResponseEntity<>(userService.getAll(), HttpStatus.OK);
     }
 
-    @PatchMapping("/status")
-    public ResponseEntity<User> patchStatus(@RequestParam boolean status, @RequestParam Integer id) {
-        try {
-            userService.patchStatus(status, id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-    @PatchMapping("/password")
-    public ResponseEntity<User> patchPassword(@RequestParam String password, @RequestParam Integer id) {
-        try {
-            userService.patchPassword(password, id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+//    @PatchMapping("/status")
+//    public ResponseEntity<User> patchStatus(@RequestParam boolean status, @RequestParam Integer id) {
+//        try {
+//            userService.patchStatus(status, id);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (NoSuchElementException e) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
+//    @PatchMapping("/password")
+//    public ResponseEntity<User> patchPassword(@RequestParam String password, @RequestParam Integer id) {
+//        try {
+//            userService.patchPassword(password, id);
+//            return new ResponseEntity<>(HttpStatus.OK);
+//        } catch (NoSuchElementException e) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
 
 

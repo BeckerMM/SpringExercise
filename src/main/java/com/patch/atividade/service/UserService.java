@@ -47,15 +47,15 @@ public class UserService {
 
     }
 
-    public void patchStatus(boolean status, Integer id) {
-        User user = userRepository.findById(id).get();
-        user.setActive(status);
-        userRepository.save(user);
-    }
-
-    public void patchPassword(String password, Integer id) {
-        User user = userRepository.findById(id).get();
-        user.setPassword(password);
-        userRepository.save(user);
-    }
+//    public void patchStatus(boolean status, Integer id) {
+//        User user = userRepository.findById(id).get();
+//        user.setActive(status);
+//        userRepository.save(user);
+//    }
+//
+//    public void patchPassword(String password, Integer id) {
+//        User user = userRepository.findById(id).get();
+//        user.setPassword(password);
+//        userRepository.save(user);
+//    }
 }

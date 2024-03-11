@@ -1,12 +1,10 @@
 package com.patch.atividade.model.entity;
 
-import com.patch.atividade.model.entity.Archive;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -15,16 +13,12 @@ import java.util.List;
 public class User {
 
     @Id()
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String name;
-    private String email;
-    private String password;
-    private Integer age;
-    private boolean active;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<Archive> archives;
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JsonIgnore
+    private UserDetailsEntity userDetailsEntity;
 
 
 }
