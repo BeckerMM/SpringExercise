@@ -11,10 +11,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.List;
 
 @Configuration
 @AllArgsConstructor
 public class BeanConfigs {
+
+    @Bean
+    public CorsConfiguration corsConfig(){
+        CorsConfiguration corsConfig = new CorsConfiguration();
+        corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
+        corsConfig.setAllowedMethods(List.of("POST","");
+        corsConfig.setAllowCredentials(true);
+    }
 
     private final AuthenticationService authenticationService;
 //    @Autowired

@@ -33,20 +33,27 @@ public class FilterAuthentication extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        Cookie cookie = cookieUtil.getCookie(request, "JWT");// Get the cookie from the request
-        String token = cookie.getValue();// Get the token from the cookie
-        String username  = jwtUtil.getUsername(token);// Validate the token
+        if(!publicRoute(request)) {
 
-        // Create the authentication object
-        UserDetails user = userDatailsService.loadUserByUsername(username);// Load the user from the token
-        Authentication authentication = new UsernamePasswordAuthenticationToken(user, user.getPassword(), user.getAuthorities());// Create the authentication object
+            Cookie cookie = cookieUtil.getCookie(request, "JWT");// Get the cookie from the request
+            String token = cookie.getValue();// Get the token from the cookie
+            String username = jwtUtil.getUsername(token);// Validate the token
 
-        // Create a new context and set the authentication in it
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext(); // Create a new context
-        securityContext.setAuthentication(authentication); // Set the authentication in the context because the session strategy will use it
-        securityContextRepository.saveContext(securityContext, request, response); // Save the context in the session
+            // Create the authentication object
+            UserDetails user = userDatailsService.loadUserByUsername(username);// Load the user from the token
+            Authentication authentication =
+                    new UsernamePasswordAuthenticationToken(
+                            user,
+                            user.getPassword(),
+                            user.getAuthorities());// Create the authentication object
 
-        filterChain.doFilter(request, response); // Call the next filter
+            // Create a new context and set the authentication in it
+            SecurityContext securityContext = SecurityContextHolder.createEmptyContext(); // Create a new context
+            securityContext.setAuthentication(authentication); // Set the authentication in the context because the session strategy will use it
+            securityContextRepository.saveContext(securityContext, request, response); // Save the context in the session
+        }
+            filterChain.doFilter(request, response); // Call the next filter
+
     }
 
     private boolean publicRoute (HttpServletRequest request){
