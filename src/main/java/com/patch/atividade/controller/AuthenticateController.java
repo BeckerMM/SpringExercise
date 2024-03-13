@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-
 public class AuthenticateController {
 
     private final AuthenticationManager authenticationManager;

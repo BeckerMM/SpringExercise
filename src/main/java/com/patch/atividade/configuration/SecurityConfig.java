@@ -26,7 +26,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests( authz -> authz
                 .requestMatchers(HttpMethod.GET,"/teste").hasAuthority("Get")
                 .requestMatchers(HttpMethod.GET,"/teste/login").permitAll()
-                .requestMatchers(HttpMethod.POST , "auth/login").permitAll()
+                .requestMatchers(HttpMethod.POST , "/login").permitAll()
                 .anyRequest().authenticated());
         // Manter a sessão do usuário na requisição ativa
 //        http.securityContext((context) -> context.securityContextRepository(repo));

@@ -1,44 +1,26 @@
 package com.patch.atividade.utils;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
-import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 public class JwtUtil {
-    private final SecretKey key;
-
-    public JwtUtil(){
-        PasswordEncoder encoder = new BCryptPasswordEncoder();
-        String senha = encoder.encode("senha123");
-        this.key = Keys.hmacShaKeyFor(senha.getBytes());
-    }
 
     public String gerarToken (UserDetails userDetails){
-        SecretKey key = Keys.hmacShaKeyFor("senha123".getBytes(StandardCharsets.UTF_8));
-        return Jwts.builder()
-                .issuer("WEG")
-                .issuedAt(new Date())
-                .expiration(new Date(new Date().getTime() + 60*5*1000))
-                .signWith(this.key,Jwts.SIG.HS256)
-                .subject(userDetails.getUsername())
-                .compact();
+        Algorithm algorithm = Algorithm.HMAC256("senha123");
+        return JWT.create().withIssuer("WEG")
+                .withIssuedAt(new Date())
+                .withExpiresAt(new Date(new Date().getTime() + 60*5*1000))
+                .withSubject(userDetails.getUsername())
+                .sign(algorithm);
 
     }
 
-    private JwtParser getParser() {
-        return Jwts.parser().verifyWith(this.key).build();
-    }
-    private Jws<Claims> validarToken(String token){
-        return getParser().parseSignedClaims(token);
-    }
+
 
     public String getUsername (String token){
-        return validarToken(token).getPayload().getSubject();
+        return JWT.decode(token).getSubject();
     }
 }
