@@ -26,6 +26,7 @@ public class DataBaseConfig {
                         .username("teste@gmail")
                         .password(new BCryptPasswordEncoder().encode("teste123"))
                         .build());
+
         userRepository.save(user);
     }
 }

@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
@@ -20,40 +22,30 @@ import java.util.List;
 public class BeanConfigs {
 
     @Bean
-    public CorsConfiguration corsConfig(){
+    public CorsConfigurationSource corsConfig(){
         CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(List.of("http://localhost:3000"));
-        corsConfig.setAllowedMethods(List.of("POST","");
+        corsConfig.setAllowedOrigins(List.of("http://localhost:3000")); // all aplications that are allowed
+        corsConfig.setAllowedMethods(List.of("POST","")); // all requests that are allowed
         corsConfig.setAllowCredentials(true);
+        corsConfig.setAllowedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource corsConfigurationSource =
+                new UrlBasedCorsConfigurationSource();
+        corsConfigurationSource.registerCorsConfiguration("/**",corsConfig);
+        return corsConfigurationSource;
     }
 
     private final AuthenticationService authenticationService;
-//    @Autowired
-//    public void config(AuthenticationManagerBuilder auth,
-//                       AuthenticationService authenticationService) throws Exception {
-//        auth.userDetailsService(authenticationService).passwordEncoder(NoOpPasswordEncoder.getInstance());
-//    }
 
     @Bean
     public SecurityContextRepository securityContextRepository(){
         return new HttpSessionSecurityContextRepository(); // Mantém a seção do úsuario na requisição
     }
-
-//    @Bean
-//    public UserDetailsService userDatailsService(
-//            AuthenticationService authenticationService){
-//    return authenticationService;
-//    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
-    }
+     
 
     @Bean
     public AuthenticationManager authenticationManager() throws Exception {
         DaoAuthenticationProvider dao = new DaoAuthenticationProvider();
-//        dao.setPasswordEncoder(new BCryptPasswordEncoder());
+        dao.setPasswordEncoder(new BCryptPasswordEncoder());
         dao.setUserDetailsService(authenticationService);
         return new ProviderManager(dao);
     }
